@@ -1,4 +1,11 @@
 <p>main works!</p>
-<ul *ngFor="let pull of pulls | async">
-  <li>{{pull | json}}</li>
-</ul>
+<div class="search-box">
+  <input type="text" id="search-str" #repo />
+  <input type="button" value="search" (click)="onclick(repo.value)">
+</div>
+
+<div class="list">
+  <ul *ngFor="let pull of pulls | async">
+    <li>{{ pull | json }}</li>
+  </ul>
+</div>

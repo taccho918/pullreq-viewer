@@ -6,13 +6,16 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GithubapiService {
 
-  private baseUrl:string = "https://api.github.com";
+  private baseUrl: string = "https://api.github.com";
 
   constructor(
     private http: HttpClient
   ) { }
 
-  public getPulls() {
-    return this.http.get(`${this.baseUrl}/rails/rails/pulls`);
+  public getPulls(owner: string, repo: string) {
+    console.log(this);
+    return this.http.get(`${this.baseUrl}/repos/${owner}/${repo}/pulls`);
   }
+
+  
 }
