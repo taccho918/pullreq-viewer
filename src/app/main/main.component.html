@@ -1,11 +1,25 @@
-<p>main works!</p>
 <div class="search-box">
-  <input type="text" id="search-str" #repo />
-  <input type="button" value="search" (click)="onclick(repo.value)">
+  <input type="text" placeholder="Type your favorite repository..." [(ngModel)]="fullRepo"/>
+  <input type="button" value="search" (click)="onClick(fullRepo)">
+</div>
+
+<div class="search-result" *ngIf="rels !== undefined">
+  {{ fullRepo }}
 </div>
 
 <div class="list">
-  <ul *ngFor="let pull of pulls | async">
-    <li>{{ pull | json }}</li>
+  <ul *ngFor="let pull of pulls">
+    <li>#{{ pull.number }} : <a target="_blank" href="{{ pull.html_url }}">{{ pull.title }}</a></li>
   </ul>
 </div>
+
+<div *ngIf="rels !== undefined">
+  <ul class="pagination">
+    <li class="page-item"
+    *ngFor="let page of rels.last"
+    (click)="setPageTo(page)">
+      <a href="#" class="page-link">{{ page }}</a>
+    </li>
+  </ul>
+</div>
+
