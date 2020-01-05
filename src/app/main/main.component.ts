@@ -13,6 +13,7 @@ export class MainComponent {
   public owner: string;
   public repo: string;
   public rels: any;
+  private currentPage = 1;
 
   constructor(
     private githubapiService: GithubapiService
@@ -23,15 +24,23 @@ export class MainComponent {
     const str = value.split('/');
     this.owner = str[0];
     this.repo = str[1];
-    this.githubapiService.getPulls(this.owner, this.repo)
-      .subscribe(res => {
-          const linkHeader = res.headers.get('link').match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/g);
-          this.rels.last = Array.from(new Array(parseInt(linkHeader[1].match(/&page=(\d+).*$/)[1]))).map((val, idx) => idx + 1 );
-          this.pulls = res.body;
-      });
+    this.request();
   }
 
   setPageTo(page: number) {
     console.log("setPageTo");
+    this.currentPage = page;
+    this.request();  
+  }
+
+  request() {
+    this.githubapiService.getPulls(this.owner, this.repo, this.currentPage)
+      .subscribe(res => {
+        if (this.currentPage === 1) {
+          this.rels = res.headers.get('link').match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/g);
+          this.rels.last = Array.from(new Array(parseInt(this.rels[1].match(/&page=(\d+).*$/)[1]))).map((val, idx) => idx + 1 );
+        }
+        this.pulls = res.body;
+      })
   }
 }

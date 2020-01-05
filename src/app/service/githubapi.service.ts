@@ -14,8 +14,8 @@ export class GithubapiService {
     private http: HttpClient
   ) { }
 
-  public getPulls(owner: string, repo: string): Observable<any>{
-    const params = new HttpParams().set('per_page', '50').set('state', 'open');
+  public getPulls(owner: string, repo: string, page: number): Observable<any>{
+    const params = new HttpParams().set('per_page', '50').set('state', 'open').set('page', page.toString());
     return this.http.get(`${this.baseUrl}/repos/${owner}/${repo}/pulls`, { observe: 'response', params: params })
       .pipe(
         retry(3),

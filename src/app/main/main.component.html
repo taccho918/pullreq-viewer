@@ -16,9 +16,10 @@
 <div *ngIf="rels !== undefined">
   <ul class="pagination">
     <li class="page-item"
-    *ngFor="let page of rels.last"
-    (click)="setPageTo(page)">
-      <a href="#" class="page-link">{{ page }}</a>
+    [ngClass]="{ 'active': pageNum === currentPage }"
+    *ngFor="let pageNum of rels.last"
+    (click)="setPageTo(pageNum)">
+      <a href="#" class="page-link">{{ pageNum }}</a>
     </li>
   </ul>
 </div>
