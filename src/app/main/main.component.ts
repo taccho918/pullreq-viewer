@@ -13,6 +13,7 @@ export class MainComponent {
   public owner: string;
   public repo: string;
   public rels: any;
+  public loading: boolean = false;
   private currentPage = 1;
 
   constructor(
@@ -28,12 +29,12 @@ export class MainComponent {
   }
 
   setPageTo(page: number) {
-    console.log("setPageTo");
     this.currentPage = page;
     this.request();  
   }
 
   request() {
+    this.loading = true;
     this.githubapiService.getPulls(this.owner, this.repo, this.currentPage)
       .subscribe(res => {
         if (this.currentPage === 1) {
@@ -41,6 +42,7 @@ export class MainComponent {
           this.rels.last = Array.from(new Array(parseInt(this.rels[1].match(/&page=(\d+).*$/)[1]))).map((val, idx) => idx + 1 );
         }
         this.pulls = res.body;
+        this.loading = false;
       })
   }
 }
