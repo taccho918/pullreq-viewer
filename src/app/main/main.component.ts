@@ -14,7 +14,7 @@ export class MainComponent {
   public repo: string;
   public rels: any;
   public loading: boolean = false;
-  private currentPage = 1;
+  public currentPage = 1;
 
   constructor(
     private githubapiService: GithubapiService
